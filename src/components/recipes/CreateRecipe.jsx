@@ -67,11 +67,7 @@ function CreateRecipe(props) {
     addToMyRecipes(id.name);
     addToRecipes(newRecipe);
     props.setRecipes([...props.recipes, newRecipe]);
-    props.setDetail({
-      title: title.value,
-      instructions: instructions.value,
-      extendedIngredients: [{ id: inredientId, original: ingredients.value }],
-    });
+    props.setDetail(newRecipe);
   };
 
   async function handleFile(file) {
