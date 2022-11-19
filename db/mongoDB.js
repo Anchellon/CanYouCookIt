@@ -23,11 +23,12 @@ function MongoModule() {
       console.log("Connected to Mongo Server");
 
       const mongo = client.db(DB_NAME);
-      const recipesCollection = mongo.collection(COLLECTION_RECIPES);
+      const myRecipesCollection = mongo.collection(COLLECTION_MYRECIPES);
 
       const query = { id: id };
-      const detail = await recipesCollection.findOne(query);
-      return detail;
+      const recipe = await myRecipesCollection.findOne(query);
+      console.log("inside getRecipe got recipe", recipe);
+      return recipe;
     } finally {
       await client.close();
     }
@@ -45,7 +46,7 @@ function MongoModule() {
       console.log("Connected to Mongo Server");
 
       const mongo = client.db(DB_NAME);
-      const recipesCollection = mongo.collection(COLLECTION_RECIPES);
+      const recipesCollection = mongo.collection(COLLECTION_MYRECIPES);
 
       const result = await recipesCollection.insertOne(recipe);
       return result;
@@ -97,43 +98,10 @@ function MongoModule() {
       const mongo = client.db(DB_NAME);
       const myRecipesCollection = mongo.collection(COLLECTION_MYRECIPES);
 
-      const query = { _id: ObjectId(userId) };
-      const options = { projection: { _id: 0, recipeId: 1 } };
-      const recipeIds = await myRecipesCollection.findOne(query, options);
+      const query = { userId: userId };
+      const recipes = await myRecipesCollection.find(query).toArray();
 
-      return recipeIds;
-    } finally {
-      await client.close();
-    }
-  }
-
-  async function deleteRecipefromMyRecipes(recipeId) {
-    let client;
-
-    try {
-      client = new MongoClient(url, MONGO_DEFAULTS);
-      await client.connect();
-      console.log("Connected to Mongo Server");
-
-      const mongo = client.db(DB_NAME);
-      const myRecipesCollection = mongo.collection(COLLECTION_MYRECIPES);
-
-      //TODO change to real userId when users implemented
-      const userId = "637314759f3b63df03cb0055";
-
-      const query = {
-        _id: ObjectId(userId),
-      };
-
-      const deleteFromArray = {
-        $pull: { recipeId: recipeId },
-      };
-
-      const result = await myRecipesCollection.updateOne(
-        query,
-        deleteFromArray
-      );
-      return result;
+      return recipes;
     } finally {
       await client.close();
     }
@@ -148,7 +116,7 @@ function MongoModule() {
       console.log("Connected to Mongo Server");
 
       const mongo = client.db(DB_NAME);
-      const myRecipesCollection = mongo.collection(COLLECTION_RECIPES);
+      const myRecipesCollection = mongo.collection(COLLECTION_MYRECIPES);
 
       const query = {
         id: recipeId,
@@ -165,7 +133,6 @@ function MongoModule() {
   db.createRecipe = createRecipe;
   db.saveRecipe = saveRecipe;
   db.getRecipes = getRecipes;
-  db.deleteRecipefromMyRecipes = deleteRecipefromMyRecipes;
   db.deleteRecipe = deleteRecipe;
   /* ------Katerina end----- */
 

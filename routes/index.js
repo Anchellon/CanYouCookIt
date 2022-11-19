@@ -115,15 +115,10 @@ router.get("/api/:userId/myrecipes", async function (req, res) {
   const userId = req.params.userId;
 
   if (userId) {
-    const recipeIds = await mongo.getRecipes(userId);
-    // console.log(recipeIds);
-    if (recipeIds) {
-      let recipesJson = new Array();
-      for (let id of recipeIds.recipeId) {
-        const recipe = await mongo.getRecipe(id);
-        recipesJson.push(recipe);
-      }
-      res.status(200).json(recipesJson);
+    const recipes = await mongo.getRecipes(userId);
+    console.log("inside router /api/:userId/myrecipes", recipes);
+    if (recipes) {
+      res.status(200).json(recipes);
     } else {
       console.log(
         `couldn't retrieve myrecipes for user=${userId} from MongoDB`
@@ -137,15 +132,15 @@ router.get("/api/:userId/myrecipes", async function (req, res) {
 router.delete("/api/myrecipes/:id", async function (req, res) {
   const recipeId = req.params.id;
 
-  console.log("got recipeId", recipeId);
+  console.log("inside delete recipeId", recipeId);
 
   if (recipeId) {
     const recipe = await mongo.getRecipe(recipeId);
-    const myRecipesRes = await mongo.deleteRecipefromMyRecipes(recipeId);
-    const recipesRes = await mongo.deleteRecipe(recipeId);
-
-    const isUserUpload = recipe.image.split("/images/userUpload/").length > 1? true: false;
-    if (isUserUpload){
+    const isUserUpload =
+      recipe.image.split("/images/userUpload/").length > 1
+        ? true
+        : false;
+    if (isUserUpload) {
       const imagePath = __dirname + "/../public" + recipe.image;
       console.log("imagePath", imagePath);
       fs.unlink(imagePath, (err) => {
@@ -156,7 +151,9 @@ router.delete("/api/myrecipes/:id", async function (req, res) {
       });
     }
 
-    if (myRecipesRes.acknowledged && recipesRes.acknowledged) {
+    const myRecipesRes = await mongo.deleteRecipe(recipeId);
+
+    if (myRecipesRes.acknowledged) {
       res.status(200).send();
     } else {
       console.log(
@@ -168,7 +165,7 @@ router.delete("/api/myrecipes/:id", async function (req, res) {
   }
 });
 
-router.post("/api/recipes/new", async function (req, res) {
+router.post("/api/myrecipes/new", async function (req, res) {
   const newRecipe = req.body.newRecipe;
 
   console.log("got newRecipe", newRecipe);
