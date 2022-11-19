@@ -47,7 +47,9 @@ function CreateRecipe(props) {
       title: title.value,
       image: imageUrl,
       extendedIngredients: [{ id: inredientId, original: ingredients.value }],
-      instructions: instructions.value,
+      instructions: instructions === ""
+        ? instructions.value
+        : "No instructions provided",
     };
     handleClose();
     addToMyRecipes(newRecipe);
