@@ -204,6 +204,24 @@ router.post("/api/myrecipes/upload", function (req, res) {
     res.status(200).json({ fileUrl: uploadUrl });
   });
 });
+
+router.post("/api/myrecipes/update", async function (req, res) {
+  const updatedRecipe = req.body.updatedRecipe;
+
+  console.log("got updatedRecipe", updatedRecipe);
+
+  if (updatedRecipe) {
+    const updatedRecipeResponse = await mongo.updateRecipe(updatedRecipe);
+    if (updatedRecipeResponse.acknowledged) {
+      res.status(200).send();
+    } else {
+      console.log("couldn't update recipe in MongoDB");
+    }
+  } else {
+    res.status(404).send({ err: "no updatedRecipe was provided" });
+  }
+});
+
 /* ------Katerina end----- */
 
 export default router;

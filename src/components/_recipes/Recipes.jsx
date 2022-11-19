@@ -10,35 +10,26 @@ Recipes.propTypes = {
 };
 
 function Recipes(props) {
-  const [currentRecipe, setCurrentRecipe] = useState();
-
-  useEffect(() => {
-    const current = props.recipes.find(
-      (r) => r.id === (currentRecipe?.id || "")
-    );
-
-    if (current) {
-      setCurrentRecipe(current);
-    } else if (props.recipes) {
-      setCurrentRecipe(props.recipes[0]);
-    }
-  });
+    const [currentRecipe, setCurrentRecipe] = useState(props.recipes[0]);
 
   return (
     <div className="row">
       <div className="col-6">
         <div className="row">
-          {props.recipes.sort((r1, r2) => r1.id.localeCompare(r2.id)).map((recipe) => (
-            <RecipeCard
-              key={recipe.id}
-              recipe={recipe}
-              setCurrentRecipe={setCurrentRecipe}
-            />
-          ))}
+          {props.recipes
+            .sort((r1, r2) => r1.id.localeCompare(r2.id))
+            .map((recipe) => (
+              <RecipeCard
+                key={recipe.id}
+                recipe={recipe}
+                setCurrentRecipe={setCurrentRecipe}
+              />
+            ))}
         </div>
       </div>
       <div className="col-6">
         <RecipeDetails
+          key={currentRecipe && currentRecipe.id}
           setRecipes={props.setRecipes}
           onClick={props.onClick}
           recipe={currentRecipe}

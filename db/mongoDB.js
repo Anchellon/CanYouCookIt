@@ -46,9 +46,9 @@ function MongoModule() {
       console.log("Connected to Mongo Server");
 
       const mongo = client.db(DB_NAME);
-      const recipesCollection = mongo.collection(COLLECTION_MYRECIPES);
+      const myRecipesCollection = mongo.collection(COLLECTION_MYRECIPES);
 
-      const result = await recipesCollection.insertOne(recipe);
+      const result = await myRecipesCollection.insertOne(recipe);
       return result;
     } finally {
       await client.close();
@@ -129,11 +129,36 @@ function MongoModule() {
     }
   }
 
+  async function updateRecipe(updatedRecipe) {
+    console.log("got updatedRecipe", updatedRecipe);
+    delete updatedRecipe._id;
+
+    let client;
+
+    try {
+      client = new MongoClient(url, MONGO_DEFAULTS);
+      await client.connect();
+      console.log("Connected to Mongo Server");
+
+      const mongo = client.db(DB_NAME);
+      const myRecipesCollection = mongo.collection(COLLECTION_MYRECIPES);
+
+      const filter = { id: updatedRecipe.id };
+      const update = { $set: { ...updatedRecipe } };
+
+      const result = await myRecipesCollection.updateOne(filter, update);
+      return result;
+    } finally {
+      await client.close();
+    }
+  }
+
   db.getRecipe = getRecipe;
   db.createRecipe = createRecipe;
   db.saveRecipe = saveRecipe;
   db.getRecipes = getRecipes;
   db.deleteRecipe = deleteRecipe;
+  db.updateRecipe = updateRecipe;
   /* ------Katerina end----- */
 
   return db;

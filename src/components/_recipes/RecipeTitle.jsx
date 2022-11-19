@@ -10,54 +10,85 @@ RecipeTitle.propTypes = {
 
 function RecipeTitle(props) {
   const [toggle, setToggle] = useState(true);
-  let newRecipe = { ...props.recipe };
+  const [updatedRecipe, setUpdatedRecipe] = useState({ ...props.recipe });
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    // setRecipe()
-  };
-
-  function handleChange(newTitle) {
-    newRecipe.title = newTitle;
-    props.setRecipes((prevRecipes) => {
-      const oldRecipes = prevRecipes.filter(
-        (recipe) => recipe.id !== newRecipe.id
-      );
-      return [...oldRecipes, newRecipe];
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setUpdatedRecipe((prevRecipe) => {
+      return { ...prevRecipe, [name]: value };
     });
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setToggle(true);
+    props.setRecipes((prevRecipes) => {
+      prevRecipes.map(
+        (r) => r.id === updatedRecipe.id && (r.title = updatedRecipe.title)
+      );
+      console.log([...prevRecipes]);
+      return [...prevRecipes];
+    });
+    await updateRecipe(updatedRecipe);
+  }
+
+  async function updateRecipe(updatedRecipe) {
+    console.log("will update this recipe id", updatedRecipe.id);
+    try {
+        const response = await fetch("/api/myrecipes/update", {
+          method: "POST",
+          body: JSON.stringify({ updatedRecipe: updatedRecipe }),
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response.ok) {
+          console.log("successfully updated a recipe in MyRecipes");
+        } else {
+          console.error("Error in fetch /api/myrecipes/update");
+        }
+      } catch (e) {
+        console.log({ error: e });
+      }
   }
 
   return toggle ? (
     <h3 onDoubleClick={() => setToggle(false)}>{props.recipe.title}</h3>
   ) : (
-    <Form onSubmit={handleSubmit} id="updateTitle">
-      <Form.Control
-        autoFocus
-        as="textarea"
-        rows={1}
-        value={props.recipe.title}
-        onChange={(event) => {
-          handleChange(event.target.value);
-        }}
-        onKeyDown={(evt) => {
-          if (evt.key === "Escape") {
+    <div>
+      <Form id="updateTitle" onSubmit={handleSubmit}>
+        <Form.Control
+          autoFocus
+          as="textarea"
+          rows={1}
+          value={updatedRecipe.title}
+          onChange={handleChange}
+          name="title"
+          onKeyDown={(evt) => {
+            if (evt.key === "Escape") {
+              setToggle(true);
+              evt.preventDefault();
+              evt.stopPropagation();
+            }
+          }}
+        />
+        <Button
+          variant="btn btn-custom btn-green"
+          type="submit"
+          form="updateTitle"
+        >
+          Update
+        </Button>
+        <Button
+          variant="btn btn-custom btn-red"
+          type="button"
+          onClick={(evt) => {
             setToggle(true);
             evt.preventDefault();
-            evt.stopPropagation();
-          }
-        }}
-      />
-      <Button
-        onClick={() => {
-          setToggle(true);
-        }}
-        variant="btn btn-custom btn-green"
-        type="submit"
-        form="updateTitle"
-      >
-        Update
-      </Button>
-    </Form>
+          }}
+        >
+          Cancel
+        </Button>
+      </Form>
+    </div>
   );
 }
 

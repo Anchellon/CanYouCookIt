@@ -25,7 +25,7 @@ function CreateRecipe(props) {
         headers: { "Content-Type": "application/json" },
       });
       if (response.ok) {
-        console.log("successfully added a recipe to Recipes");
+        console.log("successfully added a recipe to MyRecipes");
       } else {
         console.error("Error in fetch /api/myrecipes/new");
       }
