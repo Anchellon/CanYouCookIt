@@ -144,14 +144,18 @@ router.delete("/api/myrecipes/:id", async function (req, res) {
     const myRecipesRes = await mongo.deleteRecipefromMyRecipes(recipeId);
     const recipesRes = await mongo.deleteRecipe(recipeId);
 
-    const imagePath = __dirname + "/../public" + recipe.image;
-    console.log("imagePath", imagePath);
-    fs.unlink(imagePath, (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-    });
+    const isUserUpload = recipe.image.split("/images/userUpload/").length > 1? true: false;
+    if (isUserUpload){
+      const imagePath = __dirname + "/../public" + recipe.image;
+      console.log("imagePath", imagePath);
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+      });
+    }
+
     if (myRecipesRes.acknowledged && recipesRes.acknowledged) {
       res.status(200).send();
     } else {
