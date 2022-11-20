@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { removeHtmlTags } from "../utils.js";
 
 RecipeDetailsElement.propTypes = {
   idx: PropTypes.number,
@@ -17,7 +18,9 @@ function RecipeDetailsElement(props) {
     ? props.recipe.title
     : props.isIngredient
     ? props.recipe.extendedIngredients[props.idx].original
-    : props.recipe.instructions;
+    : props.recipe.instructions
+    ? removeHtmlTags(props.recipe.instructions)
+    : "No instructions provided";
 
   const field = props.isTitle
     ? "title"
@@ -77,7 +80,6 @@ function RecipeDetailsElement(props) {
       console.log({ error: e });
     }
   }
-  console.log("field", field);
 
   return toggle ? (
     <p
@@ -91,10 +93,10 @@ function RecipeDetailsElement(props) {
       onDoubleClick={() => setToggle(false)}
     >
       {updatedRecipe.extendedIngredients[0].original === ""
-          ? "No ingredients provided"
-          : updatedRecipe.instructions === ""
-          ? "No instructions provided"
-          : elementToUpdate}
+        ? "No ingredients provided"
+        : updatedRecipe.instructions === ""
+        ? "No instructions provided"
+        : elementToUpdate}
     </p>
   ) : (
     <div>

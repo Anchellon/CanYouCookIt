@@ -17,7 +17,7 @@ const RECIPES_LIMIT = 5;
 
 /* ------Katerina----- */
 /* POST recipes by ingredients */
-router.post("/api/recipes", async function (req, res) {
+router.post("/api/recipes/search", async function (req, res) {
   //   console.log(req);
   //const ingredients = req.body.ingredients;
   const ingredients = ["apples", "flour", "sugar"];
@@ -54,7 +54,7 @@ router.post("/api/recipes", async function (req, res) {
 });
 
 /* GET recipe by ID - either from external API (with write to Mongo) or from MongoDB */
-router.get("/api/recipe/:id", async function (req, res) {
+router.get("/api/recipes/:id", async function (req, res) {
   const recipeId = req.params.id;
 
   console.log("got recipeId", recipeId);
@@ -74,7 +74,7 @@ router.get("/api/recipe/:id", async function (req, res) {
         recipeDetail = await detailResponse.json();
 
         if (recipeDetail) {
-          const detailResponse = await mongo.createRecipe(recipeDetail);
+          const detailResponse = await mongo.saveRecipe(recipeDetail);
           if (detailResponse.acknowledged) {
             res.status(200).json(recipeDetail);
           } else {
@@ -100,8 +100,8 @@ router.get("/api/myrecipes/:id", async function (req, res) {
   console.log("got recipeId", recipeId);
 
   if (recipeId) {
-    const saveRecipeResponse = await mongo.saveRecipe(recipeId);
-    if (saveRecipeResponse.acknowledged) {
+    const addRecipesResponse = await mongo.addRecipe(recipeId);
+    if (addRecipesResponse.acknowledged) {
       res.status(200).send();
     } else {
       console.log("couldn't save recipe to myrecipes in MongoDB");
@@ -137,9 +137,7 @@ router.delete("/api/myrecipes/:id", async function (req, res) {
   if (recipeId) {
     const recipe = await mongo.getRecipe(recipeId);
     const isUserUpload =
-      recipe.image.split("/images/userUpload/").length > 1
-        ? true
-        : false;
+      recipe.image.split("/images/userUpload/").length > 1 ? true : false;
     if (isUserUpload) {
       const imagePath = __dirname + "/../public" + recipe.image;
       console.log("imagePath", imagePath);

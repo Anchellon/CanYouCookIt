@@ -55,7 +55,28 @@ function MongoModule() {
     }
   }
 
-  async function saveRecipe(recipeId) {
+  async function saveRecipe(recipe) {
+    console.log("got recipe", recipe);
+    recipe.id = String(recipe.id);
+
+    let client;
+
+    try {
+      client = new MongoClient(url, MONGO_DEFAULTS);
+      await client.connect();
+      console.log("Connected to Mongo Server");
+
+      const mongo = client.db(DB_NAME);
+      const recipesCollection = mongo.collection(COLLECTION_RECIPES);
+
+      const result = await recipesCollection.insertOne(recipe);
+      return result;
+    } finally {
+      await client.close();
+    }
+  }
+
+  async function addRecipe(recipeId) {
     let client;
 
     try {
@@ -155,6 +176,7 @@ function MongoModule() {
 
   db.getRecipe = getRecipe;
   db.createRecipe = createRecipe;
+  db.addRecipe = addRecipe;
   db.saveRecipe = saveRecipe;
   db.getRecipes = getRecipes;
   db.deleteRecipe = deleteRecipe;

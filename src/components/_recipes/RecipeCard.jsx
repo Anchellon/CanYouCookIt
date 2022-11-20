@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 RecipeCard.propTypes = {
   recipe: PropTypes.object,
   setCurrentRecipe: PropTypes.func,
+  showRecipeDetails: PropTypes.func,
+  isMyRecipesPage: PropTypes.bool,
 };
 
 function RecipeCard(props) {
@@ -26,7 +28,11 @@ function RecipeCard(props) {
       }}
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
-      onClick={() => props.setCurrentRecipe(props.recipe)}
+      onClick={() => {
+        props.isMyRecipesPage
+          ? props.setCurrentRecipe(props.recipe)
+          : props.showRecipeDetails(props.recipe.id);
+      }}
     >
       <div className="card-body">
         <img
