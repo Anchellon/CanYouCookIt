@@ -15,9 +15,9 @@ function CreateRecipe(props) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  async function addToMyRecipes(newRecipe) {
+  async function addNewToMyRecipes(newRecipe) {
     newRecipe.userId = props.userId;
-    console.log("addToMyRecipes id", newRecipe.id);
+    console.log("addNewToMyRecipes id", newRecipe.id);
     try {
       const response = await fetch("/api/myrecipes/new", {
         method: "POST",
@@ -51,7 +51,7 @@ function CreateRecipe(props) {
         instructions === "" ? instructions.value : "No instructions provided",
     };
     handleClose();
-    addToMyRecipes(newRecipe);
+    addNewToMyRecipes(newRecipe);
     props.setRecipes([...props.recipes, newRecipe]);
   };
 
@@ -99,8 +99,10 @@ function CreateRecipe(props) {
         <Modal.Body>
           <Form onSubmit={handleSubmit} id="recipeForm">
             <Form.Group className="mb-3">
-              <Form.Label>Title:</Form.Label>
-              <Form.Control as="textarea" rows={1} autoFocus required />
+              <Form.Label>
+                Title: <span className="text-danger">*</span>
+              </Form.Label>
+              <Form.Control name="title" as="textarea" rows={1} autoFocus required />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Image (optional):</Form.Label>
@@ -112,11 +114,11 @@ function CreateRecipe(props) {
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Ingredients:</Form.Label>
-              <Form.Control as="textarea" rows={3} />
+              <Form.Control as="textarea" rows={1} />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Instructions:</Form.Label>
-              <Form.Control as="textarea" rows={3} />
+              <Form.Control as="textarea" rows={3} name="instructions"/>
             </Form.Group>
           </Form>
         </Modal.Body>
