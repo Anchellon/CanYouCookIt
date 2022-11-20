@@ -16,7 +16,11 @@ function RecipeDetails(props) {
     props.recipe && (
       <div>
         <button
-          className="btn btn-custom btn-red"
+          className={
+            props.isMyRecipesPage
+              ? "btn btn-custom btn-red"
+              : "btn btn-custom btn-green"
+          }
           style={{ float: "right" }}
           onClick={() => props.deleteOrAddAction(props.recipe)}
         >
