@@ -90,7 +90,11 @@ function RecipeDetailsElement(props) {
       }
       onDoubleClick={() => setToggle(false)}
     >
-      {elementToUpdate}
+      {updatedRecipe.extendedIngredients[0].original === ""
+          ? "No ingredients provided"
+          : updatedRecipe.instructions === ""
+          ? "No instructions provided"
+          : elementToUpdate}
     </p>
   ) : (
     <div>

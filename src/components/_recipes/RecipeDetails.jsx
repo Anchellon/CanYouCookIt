@@ -19,7 +19,7 @@ function RecipeDetails(props) {
           style={{ float: "right" }}
           onClick={() => props.deleteFromMyRecipes(props.recipe.id)}
         >
-          <i className="bi bi-x-lg"></i>
+          <i className="bi bi-trash"></i>
         </button>
         <RecipeDetailsElement
           recipe={props.recipe}
@@ -30,9 +30,7 @@ function RecipeDetails(props) {
         <h3>Ingredients</h3>
         {/* Note: some ingredients returned from API call to Spoonacular return doubled
         --> need to filter with getUnique */}
-        {props.recipe.extendedIngredients[0].original === ""
-          ? "No ingredients provided"
-          : getUnique(props.recipe.extendedIngredients, "id").map(
+        {getUnique(props.recipe.extendedIngredients, "id").map(
               (ingredient, idx) => (
                 <RecipeDetailsElement
                   key={props.recipe.extendedIngredients[idx].id}
