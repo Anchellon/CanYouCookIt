@@ -103,16 +103,16 @@ router.post("/api/myrecipes/add", async function (req, res) {
   console.log("got recipe id", recipe.id);
 
   if (recipe) {
-    let checkedRecipe = await mongo.checkRecipe(recipe.id);
-    if (!checkedRecipe) {
+    let getRecipeResponse = await mongo.getRecipe(recipe.id);
+    if (!getRecipeResponse) {
       const addRecipesResponse = await mongo.addRecipe(recipe);
       if (addRecipesResponse.acknowledged) {
-        res.status(200).send({msg: "recipe added successfully"});
+        res.status(200).send({ msg: "recipe added successfully" });
       } else {
         console.log("couldn't save recipe to myrecipes in MongoDB");
       }
     } else {
-      res.status(200).json({msg: "recipe already added"});
+      res.status(200).json({ msg: "recipe already added" });
     }
   } else {
     console.log("no recipe id was provided with this request");
