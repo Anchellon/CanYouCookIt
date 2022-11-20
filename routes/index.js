@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import fs from "fs";
 
+import { removeHtmlTags } from "../src/components/utils.js";
 import mongo from "../db/mongoDB.js";
 //TODO remove import of dummy recipes
 import dummy_recipes from "./dummy_recipes.js";
@@ -61,7 +62,7 @@ router.get("/api/recipes/:id", async function (req, res) {
 
   if (recipeId) {
     let recipeDetail;
-    recipeDetail = await mongo.getRecipe(recipeId);
+    recipeDetail = await mongo.checkRecipe(recipeId);
 
     if (recipeDetail) {
       res.status(200).json(recipeDetail);
@@ -74,6 +75,9 @@ router.get("/api/recipes/:id", async function (req, res) {
         recipeDetail = await detailResponse.json();
 
         if (recipeDetail) {
+          recipeDetail.instructions = recipeDetail.instructions
+            ? removeHtmlTags(recipeDetail.instructions)
+            : "No instructions provided";
           const detailResponse = await mongo.saveRecipe(recipeDetail);
           if (detailResponse.acknowledged) {
             res.status(200).json(recipeDetail);

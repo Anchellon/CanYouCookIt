@@ -31,6 +31,7 @@ function RecipeDetailsElement(props) {
   const [toggle, setToggle] = useState(true);
   const [updatedRecipe, setUpdatedRecipe] = useState({ ...props.recipe });
 
+
   function handleChange(event) {
     const { name, value } = event.target;
     setUpdatedRecipe((prevRecipe) => {
@@ -109,10 +110,7 @@ function RecipeDetailsElement(props) {
             props.isTitle
               ? updatedRecipe.title
               : props.isIngredient
-              ? updatedRecipe.extendedIngredients.filter(
-                  (ingr) =>
-                    ingr.id === props.recipe.extendedIngredients[props.idx].id
-                ).original
+              ? updatedRecipe.extendedIngredients[props.idx].original
               : updatedRecipe.instructions
           }
           onChange={handleChange}
