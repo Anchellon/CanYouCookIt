@@ -33,19 +33,19 @@ function Recipes(props) {
     }
   }
 
-  async function addToMyRecipes(newRecipe) {
+  async function addSearchedToMyRecipes(newRecipe) {
     newRecipe.userId = props.userId;
-    console.log("addToMyRecipes id", newRecipe.id);
+    console.log("addSearchedToMyRecipes id", newRecipe.id);
     try {
-      const response = await fetch("/api/myrecipes/new", {
+      const response = await fetch("/api/myrecipes/add", {
         method: "POST",
         body: JSON.stringify({ newRecipe: newRecipe }),
         headers: { "Content-Type": "application/json" },
       });
       if (response.ok) {
-        console.log("successfully added a recipe to MyRecipes");
+        console.log(await response.json());
       } else {
-        console.error("Error in fetch /api/myrecipes/new");
+        console.error("Error in fetch /api/myrecipes/add");
       }
     } catch (e) {
       console.log({ error: e });
@@ -72,7 +72,11 @@ function Recipes(props) {
       <div className="col-6">
         <div className="row">
           {props.recipes
-            .sort((r1, r2) => r1.id.localeCompare(r2.id))
+            .sort((r1, r2) =>
+              props.isMyRecipesPage
+                ? r1.timestamp - r2.timestamp
+                : r1.title.localeCompare(r2.title)
+            )
             .map((recipe) => (
               <RecipeCard
                 key={recipe.id}
@@ -89,7 +93,7 @@ function Recipes(props) {
           key={currentRecipe && currentRecipe.id}
           setRecipes={props.setRecipes}
           deleteOrAddAction={
-            props.isMyRecipesPage ? deleteFromMyRecipes : addToMyRecipes
+            props.isMyRecipesPage ? deleteFromMyRecipes : addSearchedToMyRecipes
           }
           recipe={currentRecipe}
           isMyRecipesPage={props.isMyRecipesPage}
