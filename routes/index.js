@@ -44,13 +44,13 @@ router.post("/api/recipes/search", async function (req, res) {
       } else {
         res
           .status(404)
-          .send({ err: "no matched results from Spoonacular API" });
+          .json({ err: "no matched results from Spoonacular API" });
       }
     } catch (e) {
-      res.status(400).send({ err: e });
+      res.status(400).json({ err: e });
     }
   } else {
-    res.status(404).send({ err: "No ingredients" });
+    res.status(404).json({ err: "No ingredients" });
   }
 });
 
@@ -87,28 +87,32 @@ router.get("/api/recipes/:id", async function (req, res) {
         } else {
           res
             .status(404)
-            .send({ err: "no matched results from Spoonacular API" });
+            .json({ err: "no matched results from Spoonacular API" });
         }
       } catch (e) {
-        res.status(400).send({ err: e });
+        res.status(400).json({ err: e });
       }
     }
   } else {
-    res.status(404).send({ err: "No recipe ID" });
+    res.status(404).json({ err: "No recipe ID" });
   }
 });
 
-router.get("/api/myrecipes/:id", async function (req, res) {
-  const recipeId = req.params.id;
+router.post("/api/myrecipes/add", async function (req, res) {
+  const recipe = req.body.newRecipe;
+  console.log("got recipe id", recipe.id);
 
-  console.log("got recipeId", recipeId);
-
-  if (recipeId) {
-    const addRecipesResponse = await mongo.addRecipe(recipeId);
-    if (addRecipesResponse.acknowledged) {
-      res.status(200).send();
+  if (recipe) {
+    let checkedRecipe = await mongo.checkRecipe(recipe.id);
+    if (!checkedRecipe) {
+      const addRecipesResponse = await mongo.addRecipe(recipe);
+      if (addRecipesResponse.acknowledged) {
+        res.status(200).send({msg: "recipe added successfully"});
+      } else {
+        console.log("couldn't save recipe to myrecipes in MongoDB");
+      }
     } else {
-      console.log("couldn't save recipe to myrecipes in MongoDB");
+      res.status(200).json({msg: "recipe already added"});
     }
   } else {
     console.log("no recipe id was provided with this request");
@@ -180,7 +184,7 @@ router.post("/api/myrecipes/new", async function (req, res) {
       console.log("couldn't write recipe to MongoDB");
     }
   } else {
-    res.status(404).send({ err: "no newRecipe was provided" });
+    res.status(404).json({ err: "no newRecipe was provided" });
   }
 });
 
@@ -188,7 +192,7 @@ router.post("/api/myrecipes/upload", function (req, res) {
   console.log("inside upload request", req.files);
 
   if (!req.files || Object.keys(req.files).length === 0) {
-    return res.status(400).send("No files were uploaded.");
+    return res.status(400).json("No files were uploaded.");
   }
 
   // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
@@ -220,7 +224,7 @@ router.post("/api/myrecipes/update", async function (req, res) {
       console.log("couldn't update recipe in MongoDB");
     }
   } else {
-    res.status(404).send({ err: "no updatedRecipe was provided" });
+    res.status(404).json({ err: "no updatedRecipe was provided" });
   }
 });
 
