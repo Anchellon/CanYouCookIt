@@ -56,6 +56,7 @@ function MongoModule() {
   async function createRecipe(recipe) {
     // console.log("got recipe", recipe);
     recipe.id = String(recipe.id);
+    recipe.timestamp = Date.now();
 
     let client;
 
@@ -95,7 +96,8 @@ function MongoModule() {
     }
   }
 
-  async function addRecipe(recipeId) {
+  async function addRecipe(recipe) {
+    recipe.timestamp = Date.now();
     let client;
 
     try {
@@ -106,20 +108,7 @@ function MongoModule() {
       const mongo = client.db(DB_NAME);
       const myRecipesCollection = mongo.collection(COLLECTION_MYRECIPES);
 
-      //TODO change to real userId when users implemented
-      const userId = "637314759f3b63df03cb0055";
-
-      const query = {
-        _id: ObjectId(userId),
-      };
-
-      const append = {
-        $addToSet: {
-          recipeId: recipeId,
-        },
-      };
-
-      const result = await myRecipesCollection.updateOne(query, append);
+      const result = await myRecipesCollection.insertOne(recipe);
       return result;
     } finally {
       await client.close();
