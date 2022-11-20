@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 import { removeHtmlTags } from "../utils.js";
 
 RecipeDetailsElement.propTypes = {
@@ -18,6 +20,8 @@ function RecipeDetailsElement(props) {
     ? props.recipe.title
     : props.isIngredient
     ? props.recipe.extendedIngredients[props.idx].original
+      ? props.recipe.extendedIngredients[props.idx].original
+      : "No ingredients provided"
     : props.recipe.instructions
     ? removeHtmlTags(props.recipe.instructions)
     : "No instructions provided";
@@ -30,7 +34,6 @@ function RecipeDetailsElement(props) {
 
   const [toggle, setToggle] = useState(true);
   const [updatedRecipe, setUpdatedRecipe] = useState({ ...props.recipe });
-
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -83,29 +86,30 @@ function RecipeDetailsElement(props) {
   }
 
   return toggle ? (
-    <p
-      className={
-        props.isTitle
-          ? "title-details"
-          : props.isIngredient
-          ? "ingredient-details"
-          : ""
-      }
-      onDoubleClick={() => setToggle(false)}
+    <OverlayTrigger
+      placement="top"
+      overlay={<Tooltip>Double-click to edit</Tooltip>}
     >
-      {updatedRecipe.extendedIngredients[0].original === ""
-        ? "No ingredients provided"
-        : updatedRecipe.instructions === ""
-        ? "No instructions provided"
-        : elementToUpdate}
-    </p>
+      <p
+        className={
+          props.isTitle
+            ? "title-details"
+            : props.isIngredient
+            ? "ingredient-details"
+            : ""
+        }
+        onDoubleClick={() => setToggle(false)}
+      >
+        {elementToUpdate}
+      </p>
+    </OverlayTrigger>
   ) : (
     <div>
       <Form id="updateDetailsElement" onSubmit={handleSubmit}>
         <Form.Control
           autoFocus
           as="textarea"
-          rows={1}
+          rows={props.isTitle ? 1 : props.isIngredient ? 1 : 6}
           value={
             props.isTitle
               ? updatedRecipe.title
