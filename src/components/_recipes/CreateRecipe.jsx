@@ -47,9 +47,8 @@ function CreateRecipe(props) {
       title: title.value,
       image: imageUrl,
       extendedIngredients: [{ id: inredientId, original: ingredients.value }],
-      instructions: instructions === ""
-        ? instructions.value
-        : "No instructions provided",
+      instructions:
+        instructions === "" ? instructions.value : "No instructions provided",
     };
     handleClose();
     addToMyRecipes(newRecipe);
@@ -88,7 +87,12 @@ function CreateRecipe(props) {
       <Button variant="btn btn-create ms-5" onClick={handleShow}>
         {<i className="bi bi-plus-lg"></i>}
       </Button>
-      <Modal show={show} onHide={handleClose}>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Create New Recipe</Modal.Title>
         </Modal.Header>
@@ -124,6 +128,13 @@ function CreateRecipe(props) {
             name={uuidv4()}
           >
             Save
+          </Button>
+          <Button
+            variant="btn btn-custom btn-red"
+            type="button"
+            onClick={handleClose}
+          >
+            Cancel
           </Button>
         </Modal.Footer>
       </Modal>
