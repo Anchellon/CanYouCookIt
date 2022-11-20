@@ -31,22 +31,7 @@ function MyRecipesPage() {
     fetchData();
   }, []);
 
-  async function deleteFromMyRecipes(id) {
-    console.log("will delete this recipe id", id);
-    try {
-      const response = await fetch(`/api/myrecipes/${id}`, {
-        method: "delete",
-      });
-      if (response.ok) {
-        setRecipes(recipes.filter((recipe) => recipe.id !== id));
-        console.log("successfully deleted a recipe to myrecipes");
-      } else {
-        console.error(`Error in fetch delete method for /api/myrecipes/${id}`);
-      }
-    } catch (e) {
-      console.log({ error: e });
-    }
-  }
+
 
   return (
     <div>
@@ -62,7 +47,6 @@ function MyRecipesPage() {
         </div>
         <Recipes
           recipes={recipes}
-          onClick={deleteFromMyRecipes}
           setRecipes={setRecipes}
         />
       </div>

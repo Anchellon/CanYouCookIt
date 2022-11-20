@@ -2,11 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { getUnique, removeHtmlTags } from "../utils.js";
 import RecipeIngredient from "./RecipeIngredient.jsx";
-import RecipeTitle from "./RecipeTitle.jsx";
+import RecipeDetailsElement from "./RecipeDetailsElement.jsx";
 
 RecipeDetails.propTypes = {
   recipe: PropTypes.object,
-  onClick: PropTypes.func,
+  deleteFromMyRecipes: PropTypes.func,
   setRecipes: PropTypes.func,
 };
 
@@ -17,14 +17,14 @@ function RecipeDetails(props) {
         <button
           className="btn btn-custom btn-red"
           style={{ float: "right" }}
-          onClick={() => props.onClick(props.recipe.id)}
+          onClick={() => props.deleteFromMyRecipes(props.recipe.id)}
         >
           <i className="bi bi-x-lg"></i>
         </button>
-        {/* <h3>{props.recipe.title}</h3> */}
-        <RecipeTitle
+        <RecipeDetailsElement
           recipe={props.recipe}
           setRecipes={props.setRecipes}
+          isTitle={true}
         />
         <hr />
         <h3>Ingredients</h3>
@@ -33,21 +33,29 @@ function RecipeDetails(props) {
         {props.recipe.extendedIngredients[0].original === ""
           ? "No ingredients provided"
           : getUnique(props.recipe.extendedIngredients, "id").map(
-              (ingredient) => (
-                <RecipeIngredient
-                  key={ingredient.id}
-                  text={ingredient.original}
+              (ingredient, idx) => (
+                <RecipeDetailsElement
+                  key={props.recipe.extendedIngredients[idx].id}
+                  recipe={props.recipe}
+                  idx={idx}
+                  setRecipes={props.setRecipes}
+                  isIngredient={true}
                 />
               )
             )}
         <hr />
         <h3>Instructions</h3>
-        <p>
+        <RecipeDetailsElement
+          recipe={props.recipe}
+          setRecipes={props.setRecipes}
+          isInstructions={true}
+        />
+        {/* <p>
           {props.recipe.instructions === null ||
           props.recipe.instructions === ""
             ? "No instructions provided"
             : removeHtmlTags(props.recipe.instructions)}
-        </p>
+        </p> */}
       </div>
     )
   );

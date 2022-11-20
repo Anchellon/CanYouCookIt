@@ -52,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "body-parser-zlib": "^1.0.2",
     "eslint": "^8.27.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-react": "^7.31.10",
