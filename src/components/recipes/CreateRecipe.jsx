@@ -66,15 +66,19 @@ function CreateRecipe(props) {
     const instructions = eventData.filter(
       (formElem) => formElem.id === "instructions"
     )[0].value;
-    const image = eventData.filter((formElem) => formElem.id === "imageFile")[0]
-      .value;
+    const imageFile = eventData.filter(
+      (formElem) => formElem.id === "imageFile"
+    )[0].files[0];
     const extendedIngredients = eventData
       .filter((formElem) => formElem.name === "ingredients")
       .map((ingrData) => {
         return { id: uuidv4(), original: ingrData.value };
       });
 
-    const imageFile = image && image.files[0];
+    console.log(
+      "imageFile",
+      eventData.filter((formElem) => formElem.id === "imageFile")
+    );
     const response = await handleFile(imageFile);
     const imageUrl = response ? response.fileUrl : "/images/new-recipe.png";
 
@@ -160,7 +164,6 @@ function CreateRecipe(props) {
               <Form.Label>Ingredients:</Form.Label>
               {/* <Form.Control as="textarea" rows={1} /> */}
               {inputFields.map((data, idx) => {
-                const { ingredient } = data;
                 return (
                   <Form.Control
                     key={idx}
