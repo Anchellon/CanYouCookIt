@@ -9,6 +9,7 @@ RecipeDetails.propTypes = {
   deleteOrAddAction: PropTypes.func,
   setRecipes: PropTypes.func,
   isMyRecipesPage: PropTypes.bool,
+  isAdding: PropTypes.bool,
 };
 
 function RecipeDetails(props) {
@@ -26,6 +27,8 @@ function RecipeDetails(props) {
         >
           {props.isMyRecipesPage ? (
             <i className="bi bi-trash3"></i>
+          ) : props.isAdding ? (
+            <i className="bi bi-cloud-arrow-down"></i>
           ) : (
             <i className="bi bi-plus-lg"></i>
           )}

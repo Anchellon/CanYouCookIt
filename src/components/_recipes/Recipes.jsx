@@ -12,6 +12,7 @@ Recipes.propTypes = {
 
 function Recipes(props) {
   const [currentRecipe, setCurrentRecipe] = useState(props.recipes[0]);
+  const [isAdding, setIsAdding] = useState(false);
 
   async function deleteFromMyRecipes(recipe) {
     console.log("will delete this recipe id", recipe.id);
@@ -34,6 +35,8 @@ function Recipes(props) {
   }
 
   async function addSearchedToMyRecipes(newRecipe) {
+    setIsAdding(true);
+
     newRecipe.userId = props.userId;
     console.log("addSearchedToMyRecipes id", newRecipe.id);
     try {
@@ -43,6 +46,9 @@ function Recipes(props) {
         headers: { "Content-Type": "application/json" },
       });
       if (response.ok) {
+        setTimeout(() => {
+          setIsAdding(false);
+        }, 500);
         console.log(await response.json());
       } else {
         console.error("Error in fetch /api/myrecipes/add");
@@ -97,6 +103,7 @@ function Recipes(props) {
           }
           recipe={currentRecipe}
           isMyRecipesPage={props.isMyRecipesPage}
+          isAdding={isAdding}
         />
       </div>
     </div>
