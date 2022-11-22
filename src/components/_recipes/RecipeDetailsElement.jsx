@@ -19,12 +19,11 @@ function RecipeDetailsElement(props) {
   const elementToUpdate = props.isTitle
     ? props.recipe.title
     : props.isIngredient
-    ? props.recipe.extendedIngredients[props.idx].original
-      ? props.recipe.extendedIngredients[props.idx].original
-      : "No ingredients provided"
+    ? props.recipe.extendedIngredients[props.idx].original ||
+      "No ingredients provided"
     : props.recipe.instructions
-    ? removeHtmlTags(props.recipe.instructions)
-    : "No instructions provided";
+    ? removeHtmlTags(props.recipe.instructions) || "No instructions provided"
+    : null; // default
 
   const field = props.isTitle
     ? "title"
@@ -121,9 +120,8 @@ function RecipeDetailsElement(props) {
           name={field}
           onKeyDown={(evt) => {
             if (evt.key === "Escape") {
-              setToggle(true);
               evt.preventDefault();
-              evt.stopPropagation();
+              setToggle(true);
             }
           }}
         />
@@ -138,8 +136,9 @@ function RecipeDetailsElement(props) {
           variant="btn btn-custom btn-red"
           type="button"
           onClick={(evt) => {
-            setToggle(true);
             evt.preventDefault();
+            setUpdatedRecipe({ ...props.recipe });
+            setToggle(true);
           }}
         >
           Cancel
