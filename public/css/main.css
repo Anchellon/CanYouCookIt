@@ -1,4 +1,3 @@
-
 h1 {
   font-family: "Raleway";
   margin-top: 3rem;
@@ -12,6 +11,7 @@ p {
   font-size: larger;
   text-align: justify;
   font-family: "Raleway";
+  white-space: pre-line;
 }
 
 div a {
@@ -21,7 +21,6 @@ div a {
 hr {
   width: 90%;
 }
-
 
 .custom-navbar {
   background-color: #eed61d;

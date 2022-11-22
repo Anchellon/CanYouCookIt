@@ -54,7 +54,6 @@ function MongoModule() {
   }
 
   async function createRecipe(recipe) {
-    // console.log("got recipe", recipe);
     recipe.id = String(recipe.id);
     recipe.timestamp = Date.now();
 
@@ -76,7 +75,6 @@ function MongoModule() {
   }
 
   async function saveRecipe(recipe) {
-    // console.log("got recipe", recipe);
     recipe.id = String(recipe.id);
 
     let client;
@@ -159,7 +157,6 @@ function MongoModule() {
   }
 
   async function updateRecipe(updatedRecipe) {
-    console.log("got updatedRecipe", updatedRecipe);
     delete updatedRecipe._id;
 
     let client;
