@@ -256,27 +256,29 @@ router.get("/api/ingredients", async function (req, res) {
   const searchText = req.query.query;
   const retrievedIngredients = await mongo.getIngredients(searchText);
   let possibleIngredients = [];
-  // console.log(retrievedIngredients);
+  console.log(retrievedIngredients);
   retrievedIngredients.forEach((elt) => possibleIngredients.push(elt["name"]));
   res.status(200).json(retrievedIngredients);
 });
 
-router.get("/api/myinventory/:id", async function (req, res) {
-  const userId = req.params.id;
+router.get("/api/myinventory/", async function (req, res) {
+  const userId = req.user.userId;
   const retrievedInventory = await mongo.getInventory(userId);
   res.status(200).json(retrievedInventory);
 });
 
-router.post("/api/myinventory/:id", async (req, res) => {
-  const userId = req.params.id;
-  const itemId = req.body.id;
-  const status = await mongo.addToInventory(userId, itemId);
-
-  res.json({ requestBody: status });
+router.post("/api/myinventory/add", async (req, res) => {
+  const userId = req.user.userId;
+  let ingredient = req.body.ingredient;
+  ingredient.userId = userId;
+  console.log("will add item with id", ingredient);
+  const status = await mongo.addToInventory(ingredient);
+  console.log("status", status);
+  res.status(200).json({ requestBody: status });
 });
 
-router.delete("/api/myinventory/:userId/:itemId", async (req, res) => {
-  const userId = req.params.userId;
+router.delete("/api/myinventory/delete/:itemId", async (req, res) => {
+  const userId = req.user.userId;
   const itemId = req.params.itemId;
   const status = await mongo.deleteItem(userId, itemId);
   res.status(200).json(status);

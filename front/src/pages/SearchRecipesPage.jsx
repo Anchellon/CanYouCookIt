@@ -8,13 +8,14 @@ SearchRecipesPage.propTypes = {
 
 function SearchRecipesPage(props) {
   const [recipes, setRecipes] = useState([]);
-  console.log("ingredientsForSearch", props.ingredientsForSearch);
+  // console.log("ingredientsForSearch", props.ingredientsForSearch);
+  const ingredientsForSearch = props.ingredientsForSearch;
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await fetch("/api/recipes/search", {
           method: "POST",
-          body: JSON.stringify(props.ingredientsForSearch),
+          body: JSON.stringify(ingredientsForSearch),
           headers: { "Content-Type": "application/json" },
         });
         if (response.ok) {
