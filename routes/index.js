@@ -7,8 +7,6 @@ import { v4 as uuidv4 } from "uuid";
 
 import { removeHtmlTags } from "../front/src/utils/utils.js";
 import mongo from "../db/mongoDB.js";
-//TODO remove import of dummy recipes
-// import dummy_recipes from "./dummy_recipes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

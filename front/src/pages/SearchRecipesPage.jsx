@@ -3,12 +3,11 @@ import PropTypes from "prop-types";
 import Recipes from "../components/recipes/Recipes.jsx";
 
 SearchRecipesPage.propTypes = {
-  ingredientsForSearch: PropTypes.array,
+  ingredientsForSearch: PropTypes.object,
 };
 
 function SearchRecipesPage(props) {
   const [recipes, setRecipes] = useState([]);
-  // console.log("ingredientsForSearch", props.ingredientsForSearch);
   const ingredientsForSearch = props.ingredientsForSearch;
   useEffect(() => {
     async function fetchData() {
