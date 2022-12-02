@@ -18,7 +18,7 @@ Say you would like to cook something but you don't know what to cook with the in
 
 [**Presentation slides**](https://docs.google.com/presentation/d/1wNVPYCO64ktsuLlQKMthhD9Hebw8t92pKTkfeZH-nO0/edit#slide=id.g17bd83520d7_1_155)
 
-[**Video Walkthrough**]()
+[**Video Walkthrough**](https://www.youtube.com/watch?v=sC2YmiDTYjw)
 
 ## Screenshots
 
@@ -42,6 +42,9 @@ Say you would like to cook something but you don't know what to cook with the in
 
 - [100%\_nov22_Katerina](https://github.com/Anchellon/CanYouCookIt/releases/tag/100%25_nov22_Katerina)
 - [100%\_nov22_Anshul](https://github.com/Anchellon/CanYouCookIt/releases/tag/100%25_nov22_Anshul)
+
+final code for grading release:
+- [final_p3_grading_nov28](https://github.com/Anchellon/CanYouCookIt/releases/tag/final_p3_grading_nov28)
 
 ## Features
 
