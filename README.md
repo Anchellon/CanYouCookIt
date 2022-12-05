@@ -4,7 +4,7 @@
 
 ## Class Link
 
-The project is part of the [CS5610 Web Development](http://localhost:3000/https://johnguerra.co/classNamees/webDevelopment_fall_2022/) at the Northeastern University.
+The project is part of the [CS5610 Web Development](https://johnguerra.co/classNamees/webDevelopment_fall_2022/) at the Northeastern University.
 
 ## Project Objective
 
