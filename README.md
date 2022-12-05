@@ -18,7 +18,7 @@ Say you would like to cook something but you don't know what to cook with the in
 
 [**Presentation slides**](https://docs.google.com/presentation/d/1wNVPYCO64ktsuLlQKMthhD9Hebw8t92pKTkfeZH-nO0/edit#slide=id.g17bd83520d7_1_155)
 
-[**Video Walkthrough**](https://www.youtube.com/watch?v=sC2YmiDTYjw)
+[**Video Walkthrough**](https://www.youtube.com/watch?v=sC2YmiDTYjw) Rongchang: Video is a bit long close to 6:00 compare to 4:00 requests, and please remember go over your presntation within your video, thanks
 
 ## Screenshots
 
@@ -35,7 +35,7 @@ Say you would like to cook something but you don't know what to cook with the in
 
 60% progress has two releases:
 
-- [60%\_nov15_Katerina](https://github.com/Anchellon/CanYouCookIt/releases/tag/60%25_nov15_Katerina)
+- [60%\_nov15_Katerina](https://github.com/Anchellon/CanYouCookIt/releases/tag/60%25_nov15_Katerina) Rongchang: great way to track the project progress using releases 
 - [60%\_nov15_Anshul](https://github.com/Anchellon/CanYouCookIt/releases/tag/60%25_nov15_Anshul)
 
 100% progress has two releases:
