@@ -6,7 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import IndexPage from "./pages/IndexPage.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 import MyRecipesPage from "./pages/MyRecipesPage.jsx";
-import InventoryOrSearchPage from "./pages/InventoryOrSearchPage.jsx";
+import InventoryOrSearchPage from "./pages/InventoryOrSearchPage.jsx";  Very good design on pullinh each static pages for the website, I might need to replicate such design with project 4 to design and configure my project 3 
 
 import "./index.css";
 
