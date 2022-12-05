@@ -17,6 +17,9 @@ function MongoModule() {
   };
 
   /* ------Katerina----- */
+  /* Ming Hsiu Lee code review 
+    really well organized file and coding style!
+  */
   async function getRecipe(recipeId, userId) {
     let client;
 
